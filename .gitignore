@@ -1,0 +1,6 @@
+.agent-credentials.json
+.env
+.venv/
+__pycache__/
+.gate-room.json
+*.log

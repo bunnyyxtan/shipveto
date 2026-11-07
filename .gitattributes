@@ -1,0 +1,5 @@
+# Approvals hash these files byte for byte: never convert their line endings.
+prompts/** -text
+runs/** -text
+approvals/** -text
+scenarios.yaml -text
