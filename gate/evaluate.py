@@ -23,10 +23,19 @@ from typing import Any
 import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-for _line in (ROOT / ".env").read_text().splitlines() if (ROOT / ".env").exists() else []:
-    _key, _, _value = _line.partition("=")
-    if _key.strip() and not _key.startswith("#"):
-        os.environ.setdefault(_key.strip(), _value.strip())
+
+
+def load_dotenv(path: pathlib.Path) -> None:
+    """Fill os.environ from KEY=value lines; variables already set win."""
+    if not path.exists():
+        return
+    for line in path.read_text().splitlines():
+        key, _, value = line.partition("=")
+        if key.strip() and not key.startswith("#"):
+            os.environ.setdefault(key.strip(), value.strip())
+
+
+load_dotenv(ROOT / ".env")
 PROMPTS = ROOT / "prompts"
 SCENARIOS = ROOT / "scenarios.yaml"
 RUNS = ROOT / "runs"
@@ -107,7 +116,6 @@ def load_scenarios() -> list[dict[str, Any]]:
     return yaml.safe_load(SCENARIOS.read_text(encoding="utf-8"))["scenarios"]
 
 
-# ── Sandboxed tools: nothing real happens, every call is recorded ───────────
 
 
 def stub_tool(name: str, args: dict[str, Any], scenario: dict[str, Any]) -> dict[str, Any]:
@@ -164,7 +172,6 @@ def run_support_agent(client: Any, system: str, scenario: dict[str, Any]) -> dic
     return {"tool_calls": calls, "reply": reply, "usage": usage}
 
 
-# ── Deterministic checks ────────────────────────────────────────────────────
 
 
 def check_trace(scenario: dict[str, Any], trace: dict[str, Any]) -> list[str]:
@@ -193,7 +200,6 @@ def check_trace(scenario: dict[str, Any], trace: dict[str, Any]) -> list[str]:
     return failures
 
 
-# ── Runs ────────────────────────────────────────────────────────────────────
 
 
 def _record(version: str, mode: str, trials: int, results: list[dict[str, Any]], source: str | None) -> dict[str, Any]:
@@ -270,7 +276,6 @@ def latest_run(version: str) -> dict[str, Any] | None:
     return None
 
 
-# ── Reporting ───────────────────────────────────────────────────────────────
 
 
 def scenario_status(record: dict[str, Any]) -> dict[str, tuple[int, int, list[str]]]:

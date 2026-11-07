@@ -50,7 +50,7 @@ its own `usage` and `cost_usd`. Check your OpenAI dashboard for the billed figur
 
 ## How Switch is used
 
-Without Switch there is no product here: the gate is a Switch agent, the
+The gate is a Switch agent, the
 workflow is a Switch room, and the people taking part never leave Mattermost.
 
 ```mermaid
@@ -85,7 +85,7 @@ flowchart LR
 | The approval record saved with `create_room_document`, so the decision lives with the room | [`gate/bot.py`](gate/bot.py) |
 | The approver is the Mattermost person Switch says sent the message | `payload.sender_name` |
 
-## Live versus synthetic, plainly
+## Live runs versus synthetic tests
 
 - **Live**: every `test` in the room calls a real OpenAI model with the version's
   prompt. The four support tools (`lookup_order`, `issue_refund`,

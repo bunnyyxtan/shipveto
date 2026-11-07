@@ -2,7 +2,7 @@
 Used for smoke tests; the demo itself is typed in the Mattermost UI.
 
     python scripts/mm_say.py "@release-gate help"      # post, wait, show replies
-    python scripts/mm_say.py --read                    # only show recent posts
+    python scripts/mm_say.py                           # only show recent posts
 """
 
 import argparse
@@ -25,7 +25,6 @@ def env(key: str) -> str:
 
 parser = argparse.ArgumentParser()
 parser.add_argument("text", nargs="?")
-parser.add_argument("--read", action="store_true")
 parser.add_argument("--wait", type=int, default=8)
 parser.add_argument("--count", type=int, default=6)
 args = parser.parse_args()
